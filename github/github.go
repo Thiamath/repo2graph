@@ -1,4 +1,4 @@
-package repo2graph
+package github
 
 import (
 	"context"
