@@ -6,7 +6,7 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
-// GetRepositories
+// GetRepositories Retrieves all the repos from a token
 func GetRepositories(ghClient *github.Client, ctx context.Context) ([]*github.Repository, error) {
 	options := github.RepositoryListOptions{
 		Affiliation: "organization_member",
