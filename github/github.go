@@ -6,6 +6,7 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
+// GetRepositories
 func GetRepositories(ghClient *github.Client, ctx context.Context) ([]*github.Repository, error) {
 	options := github.RepositoryListOptions{
 		Affiliation: "organization_member",
