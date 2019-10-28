@@ -2,9 +2,21 @@ package github
 
 import (
 	"context"
+	"github.com/Thiamath/repo2graph/entities"
 	"github.com/google/go-github/github"
 	"github.com/rs/zerolog/log"
 )
+
+func CraftNodes(repositories []*github.Repository) []*entities.Node {
+	nodes := make([]*entities.Node, 0)
+	for _, repository := range repositories {
+		nodes = append(nodes, &entities.Node{
+			Id:    repository.GetFullName(),
+			Label: repository.GetName(),
+		})
+	}
+	return nodes
+}
 
 // GetRepositories Retrieves all the repos from a token
 func GetRepositories(ghClient *github.Client, ctx context.Context) ([]*github.Repository, error) {
