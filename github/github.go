@@ -45,6 +45,6 @@ func GetRepositories(ghClient *github.Client, ctx context.Context) (repositories
 	return repositories, nil
 }
 
-func GetRepoContents(repository github.Repository) (content []*github.RepositoryContent) {
-
-}
+//func GetRepoContents(repository github.Repository) (content []*github.RepositoryContent) {
+//
+//}

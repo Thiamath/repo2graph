@@ -13,11 +13,6 @@ var (
 	ctx context.Context
 )
 
-func HelloServer(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "text/plain")
-	_, _ = w.Write([]byte("This is an example server.\n"))
-}
-
 func getNodes(w http.ResponseWriter, r *http.Request) {
 	ghToken := r.URL.Query().Get("GITHUB_TOKEN")
 
@@ -40,8 +35,14 @@ func getNodes(w http.ResponseWriter, r *http.Request) {
 
 func StartServer() {
 	ctx = context.Background()
-	http.HandleFunc("/hello", HelloServer)
 	http.HandleFunc("/getNodes", getNodes)
+
+	web := http.FileServer(http.Dir("web/"))
+	http.Handle("/", http.StripPrefix("/", web))
+
+	staticFileServer := http.FileServer(http.Dir("web/static/"))
+	http.Handle("/web/static/", http.StripPrefix("/web/static/", staticFileServer))
+
 	err := http.ListenAndServe(":8080", nil)
 	if err != nil {
 		log.Fatal("ListenAndServe: ", err)
