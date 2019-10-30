@@ -5,26 +5,31 @@ import (
 	"github.com/Thiamath/repo2graph/entities"
 	"github.com/google/go-github/github"
 	"github.com/rs/zerolog/log"
+	"golang.org/x/oauth2"
 )
 
-func CraftNodes(repositories []*github.Repository) []*entities.Node {
-	nodes := make([]*entities.Node, 0)
-	for _, repository := range repositories {
-		nodes = append(nodes, &entities.Node{
+func GetNewClientFromToken(ghToken string) *github.Client {
+	tokenSource := oauth2.StaticTokenSource(&oauth2.Token{AccessToken: ghToken})
+	return github.NewClient(oauth2.NewClient(context.Background(), tokenSource))
+}
+
+func CraftNodes(repositories []*github.Repository) (nodes []*entities.Node) {
+	nodes = make([]*entities.Node, len(repositories))
+	for ix, repository := range repositories {
+		nodes[ix] = &entities.Node{
 			Id:    repository.GetFullName(),
 			Label: repository.GetName(),
-		})
+		}
 	}
 	return nodes
 }
 
 // GetRepositories Retrieves all the repos from a token
-func GetRepositories(ghClient *github.Client, ctx context.Context) ([]*github.Repository, error) {
+func GetRepositories(ghClient *github.Client, ctx context.Context) (repositories []*github.Repository, err error) {
 	options := github.RepositoryListOptions{
 		Affiliation: "organization_member",
 		ListOptions: github.ListOptions{PerPage: 25},
 	}
-	var repositories []*github.Repository
 	for {
 		pagedRepos, response, err := ghClient.Repositories.List(ctx, "", &options)
 		if err != nil {
@@ -38,4 +43,8 @@ func GetRepositories(ghClient *github.Client, ctx context.Context) ([]*github.Re
 		options.Page = response.NextPage
 	}
 	return repositories, nil
+}
+
+func GetRepoContents(repository github.Repository) (content []*github.RepositoryContent) {
+
 }

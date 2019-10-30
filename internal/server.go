@@ -2,9 +2,9 @@ package internal
 
 import (
 	"context"
+	"encoding/json"
 	r2g "github.com/Thiamath/repo2graph/github"
-	"github.com/google/go-github/github"
-	"log"
+	log "github.com/sirupsen/logrus"
 	"net/http"
 	"time"
 )
@@ -19,12 +19,23 @@ func HelloServer(w http.ResponseWriter, r *http.Request) {
 }
 
 func getNodes(w http.ResponseWriter, r *http.Request) {
-	ghToken := r.URL.Query()["GITHUB_TOKEN"]
-	ghClient := github.NewClient(oauthClient)
+	ghToken := r.URL.Query().Get("GITHUB_TOKEN")
+
+	ghClient := r2g.GetNewClientFromToken(ghToken)
+
 	getReposCtx, getReposCancel := context.WithTimeout(ctx, time.Minute)
-	repositories := r2g.GetRepositories(ghClient, ctx)
+	repositories, err := r2g.GetRepositories(ghClient, getReposCtx)
 	getReposCancel()
+	if err != nil {
+		log.Error(err)
+	}
+
 	nodes := r2g.CraftNodes(repositories)
+	render, err := json.Marshal(nodes)
+	if err != nil {
+		log.Error(err)
+	}
+	_, _ = w.Write(render)
 }
 
 func StartServer() {
