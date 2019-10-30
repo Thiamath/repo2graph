@@ -1,6 +1,6 @@
 package entities
 
 type Edge struct {
-	From string
-	To   string
+	From string `json:"from"`
+	To   string `json:"to"`
 }

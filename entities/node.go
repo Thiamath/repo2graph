@@ -1,6 +1,6 @@
 package entities
 
 type Node struct {
-	Id    string
-	Label string
+	Id    string `json:"id"`
+	Label string `json:"label"`
 }
