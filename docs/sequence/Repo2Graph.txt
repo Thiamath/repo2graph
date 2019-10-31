@@ -1,23 +1,26 @@
 title Repo2Graph
-participant Web
+actor Web
 participant Server
-participant LIB github
-participant GitHub
+participant Repo2Graph
+participant LIB externalCVS abstraction
+participant External CVS
 
 
-Web->Server:getNodes
+Web->Server:getRepoData
 activate Server
-Server->LIB github:GetRepositories
-activate LIB github
-LIB github->GitHub:GET Repositories
-activate GitHub
-LIB github<-GitHub:[]github.Repository
-deactivate GitHub
-Server<-LIB github:[]*github.Repository
-deactivate LIB github
-Server->LIB github:CraftNodes
-activate LIB github
-Server<-LIB github:[]*Node
-deactivate LIB github
-Web<-Server:[]Node
+Server->Repo2Graph:getRepoData
+activate Repo2Graph
+Repo2Graph->LIB externalCVS abstraction:getRepositories
+activate LIB externalCVS abstraction
+LIB externalCVS abstraction->External CVS:getRepositories
+activate External CVS
+LIB externalCVS abstraction<-External CVS:[]external.Repository
+deactivate External CVS
+Repo2Graph<-LIB externalCVS abstraction:[]*Repository
+deactivate LIB externalCVS abstraction
+Repo2Graph->Repo2Graph:craftNodes
+Repo2Graph->Repo2Graph:craftEdges
+Server<-Repo2Graph:*GraphDiagram
+deactivate Repo2Graph
+Web<-Server:GraphDiagram
 deactivate Server
