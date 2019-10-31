@@ -1,0 +1,23 @@
+title Repo2Graph
+participant Web
+participant Server
+participant LIB github
+participant GitHub
+
+
+Web->Server:getNodes
+activate Server
+Server->LIB github:GetRepositories
+activate LIB github
+LIB github->GitHub:GET Repositories
+activate GitHub
+LIB github<-GitHub:[]github.Repository
+deactivate GitHub
+Server<-LIB github:[]*github.Repository
+deactivate LIB github
+Server->LIB github:CraftNodes
+activate LIB github
+Server<-LIB github:[]*Node
+deactivate LIB github
+Web<-Server:[]Node
+deactivate Server
