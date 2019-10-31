@@ -8,33 +8,36 @@
     <script type="text/javascript" src="/web/static/js/jquery/jquery-3.4.1.js"></script>
 </head>
 <body>
+<label for="github_token">Github Token:</label><input id="github_token" type="text"/>
+<button onclick="reload()">Reload</button>
 <div id="mynetwork"></div>
 </body>
 <script type="text/javascript">
     // create an array with nodes
-    $.get('/getNodes?GITHUB_TOKEN=', function (nodeset) {
-        var nodes = new vis.DataSet(nodeset);
+    function reload() {
+        let token = document.getElementById("github_token").value;
+        $.get('/getNodes?GITHUB_TOKEN=' + token, function (nodeset) {
+            let nodes = new vis.DataSet(nodeset);
 
-        // create an array with edges
-        var edges = new vis.DataSet([
-            {from: 1, to: 3},
-            {from: 1, to: 2},
-            {from: 2, to: 4},
-            {from: 2, to: 5},
-            {from: 3, to: 3}
-        ]);
+            // create an array with edges
+            let edges = new vis.DataSet([
+                {from: 1, to: 3},
+                {from: 1, to: 2},
+                {from: 2, to: 4},
+                {from: 2, to: 5},
+                {from: 3, to: 3}
+            ]);
 
-        // create a network
-        var container = document.getElementById("mynetwork");
-        var data = {
-            nodes: nodes,
-            edges: edges
-        };
-        var options = {};
-        var network;
+            // create a network
+            let container = document.getElementById("mynetwork");
+            let data = {
+                nodes: nodes,
+                edges: edges
+            };
+            let options = {};
+            let network = new vis.Network(container, data, options);
 
-        network = new vis.Network(container, data, options);
-
-    }, "json");
+        }, "json");
+    }
 </script>
 </html>
