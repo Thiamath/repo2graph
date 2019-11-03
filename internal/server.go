@@ -1,32 +1,19 @@
 package internal
 
 import (
-	"context"
 	"encoding/json"
-	r2g "github.com/Thiamath/repo2graph/github"
+	"github.com/Thiamath/repo2graph/controller"
 	log "github.com/sirupsen/logrus"
 	"net/http"
-	"time"
 )
 
-var (
-	ctx context.Context
-)
+func getDiagramData(w http.ResponseWriter, r *http.Request) {
+	credentials := make(map[string]string)
+	credentials["GITHUB_TOKEN"] = r.URL.Query().Get("GITHUB_TOKEN")
 
-func getNodes(w http.ResponseWriter, r *http.Request) {
-	ghToken := r.URL.Query().Get("GITHUB_TOKEN")
+	diagram, err := controller.GetDiagram(credentials)
 
-	ghClient := r2g.GetNewClientFromToken(ghToken)
-
-	getReposCtx, getReposCancel := context.WithTimeout(ctx, time.Minute)
-	repositories, err := r2g.GetRepositories(ghClient, getReposCtx)
-	getReposCancel()
-	if err != nil {
-		log.Error(err)
-	}
-
-	nodes := r2g.CraftNodes(repositories)
-	render, err := json.Marshal(nodes)
+	render, err := json.Marshal(diagram)
 	if err != nil {
 		log.Error(err)
 	}
@@ -34,14 +21,13 @@ func getNodes(w http.ResponseWriter, r *http.Request) {
 }
 
 func StartServer() {
-	ctx = context.Background()
-	http.HandleFunc("/getNodes", getNodes)
+	http.HandleFunc("/getDiagramData", getDiagramData)
 
-	web := http.FileServer(http.Dir("web/"))
+	web := http.FileServer(http.Dir("internal/web/"))
 	http.Handle("/", http.StripPrefix("/", web))
 
-	staticFileServer := http.FileServer(http.Dir("web/static/"))
-	http.Handle("/web/static/", http.StripPrefix("/web/static/", staticFileServer))
+	staticFileServer := http.FileServer(http.Dir("internal/web/static/"))
+	http.Handle("/internal/web/static/", http.StripPrefix("/internal/web/static/", staticFileServer))
 
 	err := http.ListenAndServe(":8080", nil)
 	if err != nil {

@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="/web/static/css/style.css">
+    <link rel="stylesheet" href="/internal/web/static/css/style.css">
     <title>Diagram</title>
-    <script type="text/javascript" src="/web/static/js/visjs/6.3.1/vis-network.min.js"></script>
-    <script type="text/javascript" src="/web/static/js/jquery/jquery-3.4.1.js"></script>
+    <script type="text/javascript" src="/internal/web/static/js/visjs/6.3.1/vis-network.min.js"></script>
+    <script type="text/javascript" src="/internal/web/static/js/jquery/jquery-3.4.1.js"></script>
 </head>
 <body>
 <label for="github_token">Github Token:</label><input id="github_token" type="text"/>
@@ -16,17 +16,11 @@
     // create an array with nodes
     function reload() {
         let token = document.getElementById("github_token").value;
-        $.get('/getNodes?GITHUB_TOKEN=' + token, function (nodeset) {
-            let nodes = new vis.DataSet(nodeset);
+        $.get('/getDiagramData?GITHUB_TOKEN=' + token, function (dataSet) {
+            let nodes = new vis.DataSet(dataSet.nodes);
 
             // create an array with edges
-            let edges = new vis.DataSet([
-                {from: 1, to: 3},
-                {from: 1, to: 2},
-                {from: 2, to: 4},
-                {from: 2, to: 5},
-                {from: 3, to: 3}
-            ]);
+            let edges = new vis.DataSet(dataSet.edges);
 
             // create a network
             let container = document.getElementById("mynetwork");
