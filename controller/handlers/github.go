@@ -32,7 +32,7 @@ func GetRepositories(ghToken string) (repositories []*entities.Repository, err *
 			log.Error(err)
 			ghErr := err.(*github.ErrorResponse)
 			return nil, &entities.Error{
-				Error:     true,
+				ErrorFlag: true,
 				ErrorCode: ghErr.Response.StatusCode,
 				Message:   ghErr.Error(),
 			}
