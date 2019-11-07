@@ -17,7 +17,7 @@ func GetNewClientFromToken(ghToken string) *github.Client {
 }
 
 // GetRepositories Retrieves all the repos from a token
-func GetRepositories(ghToken string) (repositories []*entities.Repository, err error) {
+func GetRepositories(ghToken string) (repositories []*entities.Repository, err *entities.Error) {
 	ghClient := GetNewClientFromToken(ghToken)
 
 	getReposCtx, getReposCancel := context.WithTimeout(context.Background(), time.Minute)
@@ -30,7 +30,12 @@ func GetRepositories(ghToken string) (repositories []*entities.Repository, err e
 		pagedRepos, response, err := ghClient.Repositories.List(getReposCtx, "", &options)
 		if err != nil {
 			log.Error(err)
-			return nil, err
+			ghErr := err.(*github.ErrorResponse)
+			return nil, &entities.Error{
+				Error:     true,
+				ErrorCode: ghErr.Response.StatusCode,
+				Message:   ghErr.Error(),
+			}
 		}
 		repositories = append(repositories, toInternalRepositoryList(pagedRepos)...)
 		if response.NextPage == 0 {
@@ -51,7 +56,7 @@ func toInternalRepositoryList(githubRepositoryList []*github.Repository) (intern
 
 func toInternalRepository(githubRepository *github.Repository) (internalRepository *entities.Repository) {
 	return &entities.Repository{
-		Id:   githubRepository.GetFullName(),
+		Id:   githubRepository.GetName(),
 		Name: githubRepository.GetName(),
 	}
 }

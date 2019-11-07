@@ -3,15 +3,17 @@ package controller
 import (
 	"github.com/Thiamath/repo2graph/controller/handlers"
 	"github.com/Thiamath/repo2graph/entities"
-	"github.com/sirupsen/logrus"
+	log "github.com/sirupsen/logrus"
+	"regexp"
+	"strings"
 )
 
-func GetDiagram(credentials map[string]string) (diagram *entities.Graph, err error) {
+func GetDiagram(credentials map[string]string) (diagram *entities.Graph, err *entities.Error) {
 	ghToken := credentials[handlers.TOKEN]
 
 	repositories, err := handlers.GetRepositories(ghToken)
 	if err != nil {
-		logrus.Error(err)
+		log.Error(err)
 		return nil, err
 	}
 
@@ -42,10 +44,38 @@ func craftEdges(nodes []entities.Node, transform func([]entities.Node) []entitie
 
 func customEdgeTransform(nodes []entities.Node) (edges []entities.Edge) {
 	edges = make([]entities.Edge, 0)
+	// FIRST PASS
+	grpcNodes := make(map[string]entities.Node, 0)
+	serviceNodes := make(map[string]entities.Node, 0)
 	for _, node := range nodes {
-		switch node.Id {
-		case "nalej/grpc-application-go":
-			edges = append(edges, entities.Edge{From: "nalej/grpc-application-go", To: "nalej/system-model"})
+		matched, _ := regexp.MatchString("grpc-.+-go", node.Id)
+		if matched {
+			grpcNodes[node.Id] = node
+		} else {
+			serviceNodes[node.Id] = node
+		}
+	}
+
+	// SECOND PASS
+	for _, node := range grpcNodes {
+		submatch := strings.Split(node.Id, "-")
+		serviceName := strings.Join(submatch[1:len(submatch)-1], "-")
+		switch {
+		case submatch[0] == "grpc" && submatch[len(submatch)-1] == "go": // grpc proto
+			service, exists := serviceNodes[serviceName]
+			if exists {
+				edges = append(edges, entities.Edge{
+					From:   node.Id,
+					To:     service.Id,
+					Arrows: "to;middle",
+				})
+			} else {
+				edges = append(edges, entities.Edge{
+					From:   node.Id,
+					To:     "system-model",
+					Arrows: "to;middle",
+				})
+			}
 		}
 	}
 	return edges

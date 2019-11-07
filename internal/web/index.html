@@ -16,7 +16,11 @@
     // create an array with nodes
     function reload() {
         let token = document.getElementById("github_token").value;
-        $.get('/getDiagramData?GITHUB_TOKEN=' + token, function (dataSet) {
+        $.getJSON('/getDiagramData?GITHUB_TOKEN=' + token, function (dataSet) {
+            if (dataSet === null) {
+                console.warn("Dataset came empty.");
+                return;
+            }
             let nodes = new vis.DataSet(dataSet.nodes);
 
             // create an array with edges
@@ -28,10 +32,16 @@
                 nodes: nodes,
                 edges: edges
             };
-            let options = {};
+            let options = {
+                layout: {
+                    hierarchical: false
+                }
+            };
             let network = new vis.Network(container, data, options);
-
-        }, "json");
+        })
+            .fail(function (response, textStatus, _) {
+                console.log("Request failed: [" + textStatus + "] " + response.responseJSON.message)
+            });
     }
 </script>
 </html>

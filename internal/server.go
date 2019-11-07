@@ -11,7 +11,14 @@ func getDiagramData(w http.ResponseWriter, r *http.Request) {
 	credentials := make(map[string]string)
 	credentials["GITHUB_TOKEN"] = r.URL.Query().Get("GITHUB_TOKEN")
 
-	diagram, err := controller.GetDiagram(credentials)
+	diagram, _err := controller.GetDiagram(credentials)
+	if _err != nil {
+		log.Error(_err)
+		render, _ := json.Marshal(_err)
+		w.WriteHeader(_err.ErrorCode)
+		_, _ = w.Write(render)
+		return
+	}
 
 	render, err := json.Marshal(diagram)
 	if err != nil {
