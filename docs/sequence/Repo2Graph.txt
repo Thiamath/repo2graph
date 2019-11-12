@@ -3,7 +3,7 @@ actor Web
 participant Server
 participant Repo2Graph
 participant LIB externalCVS abstraction
-participant External CVS
+actor External CVS
 
 
 Web->Server:getRepoData
@@ -20,6 +20,19 @@ Repo2Graph<-LIB externalCVS abstraction:[]*Repository
 deactivate LIB externalCVS abstraction
 Repo2Graph->Repo2Graph:craftNodes
 Repo2Graph->Repo2Graph:craftEdges
+activate Repo2Graph
+Repo2Graph->Repo2Graph: customTransformation
+activate Repo2Graph
+Repo2Graph->LIB externalCVS abstraction: getRepositoryContent
+activate LIB externalCVS abstraction
+LIB externalCVS abstraction->External CVS: getContent
+activate External CVS
+LIB externalCVS abstraction<-External CVS: external.Content
+deactivate External CVS
+Repo2Graph<-LIB externalCVS abstraction: Content
+deactivate LIB externalCVS abstraction
+deactivate Repo2Graph
+deactivate Repo2Graph
 Server<-Repo2Graph:*GraphDiagram
 deactivate Repo2Graph
 Web<-Server:GraphDiagram

@@ -35,6 +35,16 @@
             let options = {
                 layout: {
                     hierarchical: false
+                },
+                physics: {
+                    maxVelocity: 15,
+                    barnesHut: {
+                        springLength: 500
+                    }
+                },
+                interaction: {hover: true},
+                manipulation: {
+                    enabled: true
                 }
             };
             let network = new vis.Network(container, data, options);

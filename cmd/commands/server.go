@@ -2,19 +2,27 @@ package commands
 
 import (
 	"github.com/Thiamath/repo2graph/internal"
-	"github.com/rs/zerolog/log"
+	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
+
+var debugLevel bool
 
 var serverCmd = &cobra.Command{
 	Use:   "server",
 	Short: "repo2graph is a powerful repository diagram generator",
 	Run: func(cmd *cobra.Command, args []string) {
-		log.Info().Msg("Running Server!")
+		if debugLevel {
+			log.SetLevel(log.DebugLevel)
+			log.Debug("Activating DEBUG level")
+		}
+		log.Info("Running Server!")
 		internal.StartServer()
 	},
 }
 
 func init() {
+	rootCmd.PersistentFlags().BoolVar(&debugLevel, "debug", false, "Set debug level")
+
 	rootCmd.AddCommand(serverCmd)
 }
