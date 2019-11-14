@@ -5501,7 +5501,7 @@
                 weekdaysMin: defaultLocaleWeekdaysMin,
                 weekdaysShort: defaultLocaleWeekdaysShort,
                 meridiemParse: defaultLocaleMeridiemParse
-            }; // internal storage for locale config files
+            }; // pkg storage for locale config files
 
             var locales = {};
             var localeFamilies = {};
@@ -17121,7 +17121,7 @@
                     var ctx = this.canvas.getContext('2d'); // First zoom-level comes from the image
 
                     var to = this.coordinates[0];
-                    ctx.drawImage(this.image, to[0], to[1], to[2], to[3]); // The rest are copy actions internal to the canvas/context
+                    ctx.drawImage(this.image, to[0], to[1], to[2], to[3]); // The rest are copy actions pkg to the canvas/context
 
                     for (var iterations = 1; iterations < this.NUM_ITERATIONS; iterations++) {
                         var from = this.coordinates[iterations - 1];
@@ -20569,7 +20569,7 @@
                 weekdaysMin: defaultLocaleWeekdaysMin,
                 weekdaysShort: defaultLocaleWeekdaysShort,
                 meridiemParse: defaultLocaleMeridiemParse
-            }; // internal storage for locale config files
+            }; // pkg storage for locale config files
 
             var locales = {};
             var localeFamilies = {};
@@ -25089,7 +25089,7 @@
 
                 _this._idProp = _this._options.fieldId || "id"; // name of the field containing id
 
-                _this._type = {}; // internal field types (NOTE: this can differ from this._options.type)
+                _this._type = {}; // pkg field types (NOTE: this can differ from this._options.type)
                 // all variants of a Date are internally stored as Date, so we can convert
                 // from everything to everything (also from ISODate to Number for example)
 
@@ -27322,7 +27322,7 @@
     // https://tc39.github.io/ecma262/#sec-array.prototype.values
     // `Array.prototype[@@iterator]` method
     // https://tc39.github.io/ecma262/#sec-array.prototype-@@iterator
-    // `CreateArrayIterator` internal method
+    // `CreateArrayIterator` pkg method
     // https://tc39.github.io/ecma262/#sec-createarrayiterator
 
     var es_array_iterator = defineIterator(Array, 'Array', function (iterated, kind) {
@@ -28346,7 +28346,7 @@
                  * The method assumes that the input string is a single line, i.e. without lines break.
                  *
                  * This method retains spaces, if still present (case `font.multi: false`).
-                 * A space which falls on an internal line break, will be replaced by a newline.
+                 * A space which falls on an pkg line break, will be replaced by a newline.
                  * There is no special handling of tabs; these go along with the flow.
                  *
                  * @param {string} str
@@ -28588,7 +28588,7 @@
                     return fontOptions;
                 }
                 /**
-                 * Set options and update internal state
+                 * Set options and update pkg state
                  *
                  * @param {Object} options  options to set
                  * @param {Array}  pile     array of option objects to consider for option 'chosen'
@@ -29568,7 +29568,7 @@
                     this._updateBoundingBox(x, y, ctx, selected, hover);
                 }
                 /**
-                 * Determine the dimensions to use for nodes with an internal label
+                 * Determine the dimensions to use for nodes with an pkg label
                  *
                  * Currently, these are: Circle, Ellipse, Database, Box
                  * The other nodes have external labels, and will not call this method
@@ -56447,7 +56447,7 @@
                 weekdaysMin: defaultLocaleWeekdaysMin,
                 weekdaysShort: defaultLocaleWeekdaysShort,
                 meridiemParse: defaultLocaleMeridiemParse
-            }; // internal storage for locale config files
+            }; // pkg storage for locale config files
 
             var locales = {};
             var localeFamilies = {};

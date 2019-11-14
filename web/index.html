@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/web/static/css/style.css">
+    <link rel="stylesheet" href="/web/static/css/visjs/6.4.0/vis-network.css">
+    <title>Diagram</title>
+    <script type="text/javascript" src="/web/static/js/visjs/6.4.0/vis-network.js"></script>
+    <script type="text/javascript" src="/web/static/js/jquery/jquery-3.4.1.js"></script>
+    <script type="text/javascript" src="/web/static/js/repo2graph/r2g.js"></script>
+</head>
+<body>
+<label for="github_token">Github Token:</label><input id="github_token" type="text"/>
+<button onclick="reload()">Reload</button>
+<button onclick="removeSystemModel()">RemoveSystemModel</button>
+<button onclick="addSystemModel()">AddSystemModel</button>
+<div id="mynetwork"></div>
+</body>
+</html>

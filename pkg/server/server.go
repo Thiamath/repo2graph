@@ -1,8 +1,8 @@
-package internal
+package server
 
 import (
 	"encoding/json"
-	"github.com/Thiamath/repo2graph/controller"
+	"github.com/Thiamath/repo2graph/pkg/controller"
 	log "github.com/sirupsen/logrus"
 	"net/http"
 )
@@ -30,11 +30,11 @@ func getDiagramData(w http.ResponseWriter, r *http.Request) {
 func StartServer() {
 	http.HandleFunc("/getDiagramData", getDiagramData)
 
-	web := http.FileServer(http.Dir("internal/web/"))
+	web := http.FileServer(http.Dir("pkg/web/"))
 	http.Handle("/", http.StripPrefix("/", web))
 
-	staticFileServer := http.FileServer(http.Dir("internal/web/static/"))
-	http.Handle("/internal/web/static/", http.StripPrefix("/internal/web/static/", staticFileServer))
+	staticFileServer := http.FileServer(http.Dir("pkg/web/static/"))
+	http.Handle("/pkg/web/static/", http.StripPrefix("/pkg/web/static/", staticFileServer))
 
 	err := http.ListenAndServe(":8080", nil)
 	if err != nil {

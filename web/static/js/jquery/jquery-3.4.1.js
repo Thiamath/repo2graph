@@ -228,7 +228,7 @@
 			return this.prevObject || this.constructor();
 		},
 
-		// For internal use only.
+		// For pkg use only.
 		// Behaves like an Array's method, not like a jQuery method.
 		push: push,
 		sort: arr.sort,
@@ -385,7 +385,7 @@
 				(text + "").replace(rtrim, "");
 		},
 
-		// results is for internal usage only
+		// results is for pkg usage only
 		makeArray: function (arr, results) {
 			var ret = results || [];
 
@@ -442,7 +442,7 @@
 			return matches;
 		},
 
-		// arg is for internal usage only
+		// arg is for pkg usage only
 		map: function (elems, callback, arg) {
 			var length, value,
 				i = 0,
