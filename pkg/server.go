@@ -1,4 +1,4 @@
-package server
+package pkg
 
 import (
 	"encoding/json"
@@ -30,11 +30,11 @@ func getDiagramData(w http.ResponseWriter, r *http.Request) {
 func StartServer() {
 	http.HandleFunc("/getDiagramData", getDiagramData)
 
-	web := http.FileServer(http.Dir("pkg/web/"))
+	web := http.FileServer(http.Dir("web/"))
 	http.Handle("/", http.StripPrefix("/", web))
 
-	staticFileServer := http.FileServer(http.Dir("pkg/web/static/"))
-	http.Handle("/pkg/web/static/", http.StripPrefix("/pkg/web/static/", staticFileServer))
+	staticFileServer := http.FileServer(http.Dir("web/static/"))
+	http.Handle("/web/", http.StripPrefix("/web/", staticFileServer))
 
 	err := http.ListenAndServe(":8080", nil)
 	if err != nil {
