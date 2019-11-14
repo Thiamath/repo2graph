@@ -60,7 +60,7 @@ func customEdgeTransform(ghToken string, nodes []entities.Node) (edges []entitie
 				split := strings.Split(name, "/")
 				if len(split) > 2 {
 					//host := split[0]
-					owner := split[1]
+					//owner := split[1]
 					repo := split[2]
 					//version := dependency.Get("version")
 					//log.Debug("name: ", name, "\thost: ", host, "\tversion: ", version)
