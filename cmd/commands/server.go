@@ -1,7 +1,7 @@
 package commands
 
 import (
-	"github.com/Thiamath/repo2graph/pkg/server"
+	"github.com/Thiamath/repo2graph/pkg"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
@@ -17,7 +17,7 @@ var serverCmd = &cobra.Command{
 			log.Debug("Activating DEBUG level")
 		}
 		log.Info("Running Server!")
-		server.StartServer()
+		pkg.StartServer()
 	},
 }
 
