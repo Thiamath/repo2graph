@@ -2,18 +2,27 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="/web/css/style.css">
+    <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="https://unpkg.com/vis-network@^6.4/dist/vis-network.css">
     <title>Diagram</title>
-    <script type="text/javascript" src="https://unpkg.com/vis-network@^6.4/dist/vis-network.js"></script>
-    <script type="text/javascript" src="https://unpkg.com/jquery@^3.4/dist/jquery.js"></script>
-    <script type="text/javascript" src="/web/js/r2g.js"></script>
+    <script type="application/javascript" src="https://unpkg.com/vis-network@^6.4/dist/vis-network.js"></script>
+    <script type="application/javascript" src="https://unpkg.com/jquery@^3.4/dist/jquery.js"></script>
+    <script type="application/javascript" src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 </head>
 <body>
 <label for="github_token">Github Token:</label><input id="github_token" type="text"/>
 <button onclick="reload()">Reload</button>
-<button onclick="removeSystemModel()">RemoveSystemModel</button>
-<button onclick="addSystemModel()">AddSystemModel</button>
 <div id="mynetwork"></div>
+<div id="nodelist">
+    <span v-for="node in nodes">
+        <label>
+            <input type="checkbox" :value="node.id" checked="checked" onchange="toggleNode(this)"/>
+           {{ node.label }}
+        </label>
+        <br/>
+    </span>
+</div>
 </body>
+<script type="text/javascript" src="/js/vApp.js"></script>
+<script type="text/javascript" src="/js/r2g.js"></script>
 </html>

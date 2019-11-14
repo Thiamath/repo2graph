@@ -20,7 +20,7 @@ func GetDiagram(credentials map[string]string) (diagram *entities.Graph, err *en
 	nodes := craftNodesFromRepositories(repositories)
 	return &entities.Graph{
 		Nodes: nodes,
-		Edges: craftEdges(ghToken, nodes, customEdgeTransform),
+		Edges: craftEdges(ghToken, nodes, nil),
 	}, nil
 }
 

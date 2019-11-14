@@ -33,8 +33,8 @@ func StartServer() {
 	web := http.FileServer(http.Dir("web/"))
 	http.Handle("/", http.StripPrefix("/", web))
 
-	staticFileServer := http.FileServer(http.Dir("web/static/"))
-	http.Handle("/web/", http.StripPrefix("/web/", staticFileServer))
+	//staticFileServer := http.FileServer(http.Dir("web/static/"))
+	//http.Handle("/web/", http.StripPrefix("/web/", staticFileServer))
 
 	err := http.ListenAndServe(":8080", nil)
 	if err != nil {

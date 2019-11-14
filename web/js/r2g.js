@@ -9,15 +9,16 @@ let options = {
         maxVelocity: 15,
         barnesHut: {
             springLength: 500
+        },
+        stabilization: {
+            fit: true
         }
     },
     interaction: {hover: true},
     manipulation: {
-        enabled: true
+        enabled: false
     }
 };
-
-let systemModel;
 
 function reload() {
     let token = document.getElementById("github_token").value;
@@ -26,6 +27,7 @@ function reload() {
             console.warn("Dataset came empty.");
             return;
         }
+        nodelist.nodes = dataSet.nodes;
         nodes = new vis.DataSet(dataSet.nodes);
         // create an array with edges
         edges = new vis.DataSet(dataSet.edges);
@@ -44,11 +46,15 @@ function reload() {
         });
 }
 
-function removeSystemModel() {
-    systemModel = nodes.get("system-model");
-    nodes.delete("system-model");
-}
+let deletedNodes = new Map();
 
-function addSystemModel() {
-    nodes.add(systemModel)
+function toggleNode(input) {
+    if (input.checked) {
+        nodes.add(deletedNodes.get(input.value));
+        deletedNodes.delete(input.value);
+        network.fit();
+    } else {
+        deletedNodes.set(input.value, nodes.get(input.value));
+        let deleted = nodes.remove(input.value);
+    }
 }
