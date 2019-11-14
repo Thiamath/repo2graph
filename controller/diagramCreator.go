@@ -94,6 +94,7 @@ func customEdgeTransform(ghToken string, nodes []entities.Node) (edges []entitie
 		get := tomlContent.Get("projects")
 		if get != nil {
 			constraints := get.([]*toml.Tree)
+			systemModel := false
 			for _, constraint := range constraints {
 				name := constraint.Get("name").(string)
 				split := strings.Split(name, "/")
@@ -102,15 +103,26 @@ func customEdgeTransform(ghToken string, nodes []entities.Node) (edges []entitie
 					owner := split[1]
 					repo := split[2]
 					//version := constraint.Get("version")
-					//og.Debug("name: ", name, "\thost: ", host, "\tversion: ", version)
+					//log.Debug("name: ", name, "\thost: ", host, "\tversion: ", version)
 					if owner == "nalej" {
 						sink, transitive := grpcTransient[repo]
 						if transitive {
-							edges = append(edges, entities.Edge{
-								From:   node.Id,
-								To:     sink,
-								Arrows: "to;middle",
-							})
+							if sink == "system-model" {
+								if !systemModel {
+									edges = append(edges, entities.Edge{
+										From:   node.Id,
+										To:     sink,
+										Arrows: "to;middle",
+									})
+									systemModel = sink == "system-model"
+								}
+							} else {
+								edges = append(edges, entities.Edge{
+									From:   node.Id,
+									To:     sink,
+									Arrows: "to;middle",
+								})
+							}
 						} else {
 							edges = append(edges, entities.Edge{
 								From:   node.Id,
