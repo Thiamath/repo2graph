@@ -3,55 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="/internal/web/static/css/style.css">
+    <link rel="stylesheet" href="/internal/web/static/css/visjs/6.4.0/vis-network.css">
     <title>Diagram</title>
-    <script type="text/javascript" src="/internal/web/static/js/visjs/6.3.1/vis-network.min.js"></script>
+    <script type="text/javascript" src="/internal/web/static/js/visjs/6.4.0/vis-network.js"></script>
     <script type="text/javascript" src="/internal/web/static/js/jquery/jquery-3.4.1.js"></script>
+    <script type="text/javascript" src="/internal/web/static/js/repo2graph/r2g.js"></script>
 </head>
 <body>
 <label for="github_token">Github Token:</label><input id="github_token" type="text"/>
 <button onclick="reload()">Reload</button>
+<button onclick="removeSystemModel()">RemoveSystemModel</button>
+<button onclick="addSystemModel()">AddSystemModel</button>
 <div id="mynetwork"></div>
 </body>
-<script type="text/javascript">
-    // create an array with nodes
-    function reload() {
-        let token = document.getElementById("github_token").value;
-        $.getJSON('/getDiagramData?GITHUB_TOKEN=' + token, function (dataSet) {
-            if (dataSet === null) {
-                console.warn("Dataset came empty.");
-                return;
-            }
-            let nodes = new vis.DataSet(dataSet.nodes);
-
-            // create an array with edges
-            let edges = new vis.DataSet(dataSet.edges);
-
-            // create a network
-            let container = document.getElementById("mynetwork");
-            let data = {
-                nodes: nodes,
-                edges: edges
-            };
-            let options = {
-                layout: {
-                    hierarchical: false
-                },
-                physics: {
-                    maxVelocity: 15,
-                    barnesHut: {
-                        springLength: 500
-                    }
-                },
-                interaction: {hover: true},
-                manipulation: {
-                    enabled: true
-                }
-            };
-            let network = new vis.Network(container, data, options);
-        })
-            .fail(function (response, textStatus, _) {
-                console.log("Request failed: [" + textStatus + "] " + response.responseJSON.message)
-            });
-    }
-</script>
 </html>
