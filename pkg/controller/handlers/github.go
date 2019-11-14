@@ -3,7 +3,7 @@ package handlers
 import (
 	"bytes"
 	"context"
-	"github.com/Thiamath/repo2graph/entities"
+	"github.com/Thiamath/repo2graph/pkg/entities"
 	"github.com/google/go-github/github"
 	log "github.com/sirupsen/logrus"
 	"golang.org/x/oauth2"
