@@ -1,7 +1,7 @@
 package controller
 
 import (
-	handlers2 "github.com/Thiamath/repo2graph/pkg/controller/handlers"
+	"github.com/Thiamath/repo2graph/pkg/controller/handlers"
 	"github.com/Thiamath/repo2graph/pkg/entities"
 	"github.com/pelletier/go-toml"
 	log "github.com/sirupsen/logrus"
@@ -9,9 +9,9 @@ import (
 )
 
 func GetDiagram(credentials map[string]string) (diagram *entities.Graph, err *entities.Error) {
-	ghToken := credentials[handlers2.TOKEN]
+	ghToken := credentials[handlers.TOKEN]
 
-	repositories, err := handlers2.GetRepositories(ghToken)
+	repositories, err := handlers.GetRepositories(ghToken)
 	if err != nil {
 		log.Error(err)
 		return nil, err
@@ -50,7 +50,7 @@ func customEdgeTransform(ghToken string, nodes []entities.Node) (edges []entitie
 	for _, node := range nodes {
 		log.Info("Revised ", i, " of ", len(nodes))
 		i++
-		content, _ := handlers2.GetFileFromRepository(ghToken, node.LinkedRepository, "/Gopkg.lock")
+		content, _ := handlers.GetFileFromRepository(ghToken, node.LinkedRepository, "/Gopkg.lock")
 		tomlContent, _ := toml.Load(content)
 		get := tomlContent.Get("projects")
 		if get != nil {
