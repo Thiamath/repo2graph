@@ -9,9 +9,10 @@ Library that tries to approach a graph simulation of a repository ecosystem
    go mod tidy
    ```
    The available CLI commands are defined in `cmd/commands`.
-3. Build the command-line tool:
+3. Build the command-line tool (the `-o` flag avoids a name clash with the `cmd`
+   directory):
    ```bash
-   go build ./cmd           # produces a repo2graph binary
+   go build -o repo2graph ./cmd
    ```
 4. Run the CLI directly from sources or using the built binary:
    ```bash
