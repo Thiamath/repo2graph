@@ -3,17 +3,19 @@ Library that tries to approach a graph simulation of a repository ecosystem
 
 ## Build and run
 
-1. Ensure the Go toolchain is installed.
-2. Build the command line tool:
+1. Install Go (1.21+ recommended) and clone this repository.
+2. Download dependencies using Go modules:
+   ```bash
+   go mod tidy
+   ```
+3. Build the command-line tool:
    ```bash
    go build -o repo2graph ./cmd
    ```
-3. Alternatively, run it directly from the sources:
+4. Run the server directly from the sources or using the built binary:
    ```bash
    go run ./cmd server
-   ```
-   or execute the built binary:
-   ```bash
+   # or
    ./repo2graph server
    ```
 
