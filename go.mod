@@ -1,6 +1,6 @@
 module github.com/Thiamath/repo2graph
 
-go 1.23.8
+go 1.21
 
 require (
     github.com/google/go-github/v55 v55.0.0

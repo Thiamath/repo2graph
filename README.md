@@ -8,15 +8,16 @@ Library that tries to approach a graph simulation of a repository ecosystem
    ```bash
    go mod tidy
    ```
+   The available CLI commands are defined in `cmd/commands`.
 3. Build the command-line tool:
    ```bash
-   go build -o repo2graph ./cmd
+   go build ./cmd           # produces a repo2graph binary
    ```
-4. Run the server directly from the sources or using the built binary:
+4. Run the CLI directly from sources or using the built binary:
    ```bash
-   go run ./cmd server
+   go run ./cmd server      # run without building
    # or
-   ./repo2graph server
+   ./repo2graph server      # using the compiled binary
    ```
 
 ## Using the server
